@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\auth\AuthConroller;
+use App\Http\Controllers\SubjectController;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\RedirectIfAuthenticated;
 
@@ -32,6 +33,15 @@ Route::controller(AuthConroller::class)->group(function () {
 });
 
 Route::get('/admin/dashboard', [AdminDashboard::class, 'index'])->name('admin.dashboard')->middleware(Authenticate::class);
+
+Route::controller(SubjectController::class)->group( function () {
+    Route::get('/admin/subjects', 'index')->name('admin.subjects');
+    Route::get('/admin/subject/create', 'create')->name('admin.subject.create');
+    Route::post('/admin/subject/create', 'store');
+    Route::get('/admin/subject/{subject}/edit', 'edit')->name('admin.subject.edit');
+    Route::post('/admin/subject/{subject}/edit', 'update');
+    Route::get('/admin/subject/{subject}/delete', 'destroy')->name('admin.subject.delete');
+});
 
 Route::get('/create', function () {
     $data = [
