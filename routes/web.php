@@ -35,7 +35,7 @@ Route::controller(AuthConroller::class)->group(function () {
 
 Route::prefix('admin')->name('admin.')->middleware(Authenticate::class)->group(function () {
 
-    Route::get('dashboard', [AdminDashboard::class, 'index'])->name('dashboard')->middleware(Authenticate::class);
+    Route::get('dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
 
     Route::controller(SubjectController::class)->group(function () {
         Route::get('subjects', 'index')->name('subjects');
