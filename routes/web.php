@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\auth\AuthConroller;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\TopicController;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\RedirectIfAuthenticated;
 
@@ -29,19 +30,32 @@ Route::controller(AuthConroller::class)->group(function () {
         Route::get('/login', 'login_view')->name('login');
         Route::post('/login', 'login_process');
     });
-    Route::get('/logout', 'logout')->name('logout');
+    Route::get('/logout', 'logout')->name('logout')->middleware(Authenticate::class);
 });
 
-Route::get('/admin/dashboard', [AdminDashboard::class, 'index'])->name('admin.dashboard')->middleware(Authenticate::class);
+Route::prefix('admin')->name('admin.')->middleware(Authenticate::class)->group(function () {
 
-Route::controller(SubjectController::class)->group( function () {
-    Route::get('/admin/subjects', 'index')->name('admin.subjects');
-    Route::get('/admin/subject/create', 'create')->name('admin.subject.create');
-    Route::post('/admin/subject/create', 'store');
-    Route::get('/admin/subject/{subject}/edit', 'edit')->name('admin.subject.edit');
-    Route::post('/admin/subject/{subject}/edit', 'update');
-    Route::get('/admin/subject/{subject}/delete', 'destroy')->name('admin.subject.delete');
+    Route::get('dashboard', [AdminDashboard::class, 'index'])->name('dashboard')->middleware(Authenticate::class);
+
+    Route::controller(SubjectController::class)->group(function () {
+        Route::get('subjects', 'index')->name('subjects');
+        Route::get('subject/create', 'create')->name('subject.create');
+        Route::post('subject/create', 'store');
+        Route::get('subject/{subject}/edit', 'edit')->name('subject.edit');
+        Route::post('subject/{subject}/edit', 'update');
+        Route::get('subject/{subject}/delete', 'destroy')->name('subject.delete');
+    });
+
+    Route::controller(TopicController::class)->group(function () {
+        Route::get('topics', 'index')->name('topics');
+        Route::get('topic/create', 'create')->name('topic.create');
+        Route::post('topic/create', 'store');
+        Route::get('topic/{topic}/edit', 'edit')->name('topic.edit');
+        Route::post('topic/{topic}/edit', 'update');
+        Route::get('topic/{topic}/delete', 'destroy')->name('topic.delete');
+    });
 });
+
 
 Route::get('/create', function () {
     $data = [

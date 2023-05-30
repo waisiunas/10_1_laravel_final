@@ -50,14 +50,6 @@ class SubjectController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Subject $subject)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Subject $subject)
