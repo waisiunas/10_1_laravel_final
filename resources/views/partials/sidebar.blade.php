@@ -24,7 +24,7 @@
             </li>
 
             <li class="sidebar-item">
-                <a class="sidebar-link" href="">
+                <a class="sidebar-link" href="{{route('admin.questions')}}">
                     <i class="align-middle" data-feather="book"></i> <span class="align-middle">Questions</span>
                 </a>
             </li>

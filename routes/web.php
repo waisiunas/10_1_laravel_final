@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\auth\AuthConroller;
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TopicController;
 use App\Http\Middleware\Authenticate;
@@ -53,6 +54,15 @@ Route::prefix('admin')->name('admin.')->middleware(Authenticate::class)->group(f
         Route::get('topic/{topic}/edit', 'edit')->name('topic.edit');
         Route::post('topic/{topic}/edit', 'update');
         Route::get('topic/{topic}/delete', 'destroy')->name('topic.delete');
+    });
+
+    Route::controller(QuestionController::class)->group(function () {
+        Route::get('questions', 'index')->name('questions');
+        Route::get('question/create', 'create')->name('question.create');
+        Route::post('question/create', 'store');
+        Route::get('question/{question}/edit', 'edit')->name('question.edit');
+        Route::post('question/{question}/edit', 'update');
+        Route::get('question/{question}/delete', 'destroy')->name('question.delete');
     });
 });
 
