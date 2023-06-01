@@ -115,28 +115,29 @@ class QuestionController extends Controller
 
         $is_updated = $question->update($data);
 
-        // if ($is_updated) {
-        //     $is_correct = 0;
-        //     for ($i = 1; $i <= 4; $i++) {
+        if ($is_updated) {
+            $is_correct = 0;
+            $i = 1;
+            foreach ($question->choices as $choice) {
+                if ($i == $request->correct_choice) {
+                    $is_correct = 1;
+                } else {
+                    $is_correct = 0;
+                }
 
-        //         if ($i == $request->correct_choice) {
-        //             $is_correct = 1;
-        //         } else {
-        //             $is_correct = 0;
-        //         }
+                $data = [
+                    'text' => request('choice_' . $i),
+                    'is_correct' => $is_correct,
+                ];
+                $i++;
 
-        //         $data = [
-        //             'text' => request('choice_' . $i),
-        //             'is_correct' => $is_correct,
-        //         ];
+                $choice->update($data);
+            }
 
-        //         Choice::create($data);
-        //     }
-
-        //     return back()->with(['success' => 'Magic has been spelled!']);
-        // } else {
-        //     return back()->with(['failure' => 'Magic has failed to spell!']);
-        // }
+            return back()->with(['success' => 'Magic has been spelled!']);
+        } else {
+            return back()->with(['failure' => 'Magic has failed to spell!']);
+        }
     }
 
     /**
@@ -144,6 +145,12 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
-        //
+        $is_deleted = $question->delete();
+
+        if ($is_deleted) {
+            return back()->with(['success' => 'Magic has been spelled!']);
+        } else {
+            return back()->with(['failure' => 'Magic has failed to spell!']);
+        }
     }
 }

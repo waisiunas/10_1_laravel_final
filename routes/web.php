@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\auth\AuthConroller;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TopicController;
@@ -22,9 +23,9 @@ use App\Http\Middleware\RedirectIfAuthenticated;
 |
 */
 
-Route::get('/', function () {
-    return  redirect()->route('login');
-});
+Route::get('/', [PageController::class, 'home'])->name('home');
+Route::get('/select-subject', [PageController::class, 'select_subject'])->name('select.subject');
+Route::get('/select-topic/{subject:slug}', [PageController::class, 'select_topic'])->name('select.topic');
 
 Route::controller(AuthConroller::class)->group(function () {
     Route::middleware(RedirectIfAuthenticated::class)->group(function () {

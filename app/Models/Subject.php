@@ -13,4 +13,8 @@ class Subject extends Model
         'name',
         'slug',
     ];
+
+    public function topics () {
+        return $this->hasMany(Topic::class);
+    }
 }
