@@ -23,9 +23,11 @@ use App\Http\Middleware\RedirectIfAuthenticated;
 |
 */
 
-Route::get('/', [PageController::class, 'home'])->name('home');
-Route::get('/select-subject', [PageController::class, 'select_subject'])->name('select.subject');
-Route::get('/select-topic/{subject:slug}', [PageController::class, 'select_topic'])->name('select.topic');
+Route::controller(PageController::class)->group(function () {
+    Route::get('/', 'home')->name('home');
+    Route::get('/select-subject', 'select_subject')->name('select.subject');
+    Route::get('/select-topic/{subject:slug}', 'select_topic')->name('select.topic');
+});
 
 Route::controller(AuthConroller::class)->group(function () {
     Route::middleware(RedirectIfAuthenticated::class)->group(function () {
