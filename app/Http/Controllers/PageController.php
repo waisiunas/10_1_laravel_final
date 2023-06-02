@@ -22,9 +22,16 @@ class PageController extends Controller
 
     public function select_topic(Subject $subject)
     {
-        // dd($subject->topics);
         return view('pages.select-topic', [
             'topics' => $subject->topics,
+        ]);
+    }
+
+    public function questions(Topic $topic)
+    {
+        return view('pages.questions', [
+            'questions' => $topic->questions,
+            'topics' => $topic->subject->topics,
         ]);
     }
 }

@@ -30,7 +30,7 @@
                     <div class="col-md-4">
                         <div class="card mb-3">
                             <div class="card-body text-center">
-                                <a href="">{{ $topic->name }}</a>
+                                <a href="{{ route('questions', $topic) }}">{{ $topic->name }}</a>
                             </div>
                         </div>
                     </div>

@@ -27,6 +27,7 @@ Route::controller(PageController::class)->group(function () {
     Route::get('/', 'home')->name('home');
     Route::get('/select-subject', 'select_subject')->name('select.subject');
     Route::get('/select-topic/{subject:slug}', 'select_topic')->name('select.topic');
+    Route::get('/questions/{topic:slug}', 'questions')->name('questions');
 });
 
 Route::controller(AuthConroller::class)->group(function () {
