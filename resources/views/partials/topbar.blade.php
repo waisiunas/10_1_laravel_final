@@ -13,9 +13,11 @@
 
                 <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
                     data-bs-toggle="dropdown">
+                    <img src="{{ asset('images/' . Auth::user()->profile_picture) }}" alt="" width="50px" height="50px">
                     <span class="text-dark">{{ Auth::user()->name }}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
+                    <a class="dropdown-item" href="{{ route('admin.profile') }}">Profile</a>
                     <a class="dropdown-item" href="{{ route('logout') }}">Log out</a>
                 </div>
             </li>

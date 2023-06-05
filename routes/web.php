@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\auth\AuthConroller;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TopicController;
@@ -67,6 +68,12 @@ Route::prefix('admin')->name('admin.')->middleware(Authenticate::class)->group(f
         Route::get('question/{question}/edit', 'edit')->name('question.edit');
         Route::post('question/{question}/edit', 'update');
         Route::get('question/{question}/delete', 'destroy')->name('question.delete');
+    });
+
+    Route::controller(ProfileController::class)->group(function () {
+        Route::get('profile', 'index')->name('profile');
+        Route::post('profile/picture', 'update_picture')->name('profile.picture');
+        Route::post('profile/details', 'update_details')->name('profile.details');
     });
 });
 
