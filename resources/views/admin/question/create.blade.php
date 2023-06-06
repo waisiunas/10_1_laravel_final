@@ -40,7 +40,7 @@
                     <div class="mb-3">
                         <label for="topic_id" class="form-label">Topic</label>
                         <select name="topic_id" id="topic_id" class="form-select @error('topic_id') is-invalid @enderror">
-                            @if (old('subject_id') || old('topic_id')) {
+                            @if (old('subject_id') || old('topic_id'))
                                 <option value="" selected hidden>Select a topic!</option>
                                 @if (old('subject_id') && old('topic_id'))
                                     @foreach ($topics as $topic)
@@ -59,7 +59,6 @@
                                         @endif
                                     @endforeach
                                 @endif
-                                }
                             @else
                                 <option value="" selected hidden>Select a subject first!</option>
                             @endif
