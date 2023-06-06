@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\auth\AuthConroller;
+use App\Http\Controllers\DynamicController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestionController;
@@ -74,9 +75,13 @@ Route::prefix('admin')->name('admin.')->middleware(Authenticate::class)->group(f
         Route::get('profile', 'index')->name('profile');
         Route::post('profile/picture', 'update_picture')->name('profile.picture');
         Route::post('profile/details', 'update_details')->name('profile.details');
+        Route::post('profile/password', 'update_password')->name('profile.password');
+    });
+
+    Route::controller(DynamicController::class)->group(function () {
+        Route::post('subject/topics', 'fetch_topics')->name('subject.topics');
     });
 });
-
 
 Route::get('/create', function () {
     $data = [

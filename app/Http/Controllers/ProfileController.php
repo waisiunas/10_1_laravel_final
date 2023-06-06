@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -15,7 +16,25 @@ class ProfileController extends Controller
 
     public function update_details(Request $request)
     {
-        return 'Here';
+        $user = User::find(Auth::id());
+
+        $request->validate([
+            'name' => ['required'],
+            'email' => ['required', 'unique:users,email,' . $user->id . ',id'],
+        ]);
+
+        $data = [
+            'name' => $request->name,
+            'email' => $request->email,
+        ];
+
+        $is_updated = $user->update($data);
+
+        if ($is_updated) {
+            return back()->with(['success' => 'Magic has been spelled!']);
+        } else {
+            return back()->with(['failure' => 'Magic has failed to spell!']);
+        }
     }
 
     public function update_picture(Request $request)
@@ -46,6 +65,32 @@ class ProfileController extends Controller
             }
         } else {
             return back()->with(['failure' => 'Magic has failed to spell!']);
+        }
+    }
+
+    public function update_password(Request $request)
+    {
+        $user = User::find(Auth::id());
+
+        $request->validate([
+            'current_password' => ['required'],
+            'password' => ['required', 'confirmed'],
+        ]);
+
+        if (Hash::check($request->current_password, $user->password)) {
+            $data = [
+                'password' => Hash::make($request->password),
+            ];
+
+            $is_updated = $user->update($data);
+
+            if ($is_updated) {
+                return back()->with(['success' => 'Magic has been spelled!']);
+            } else {
+                return back()->with(['failure' => 'Magic has failed to spell!']);
+            }
+        } else {
+            return back()->withErrors(['current_password' => 'The current password does not match']);
         }
     }
 }

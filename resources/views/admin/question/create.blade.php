@@ -40,14 +40,29 @@
                     <div class="mb-3">
                         <label for="topic_id" class="form-label">Topic</label>
                         <select name="topic_id" id="topic_id" class="form-select @error('topic_id') is-invalid @enderror">
-                            <option value="" selected hidden>Select a topic!</option>
-                            @foreach ($topics as $topic)
-                                @if ($topic->id == old('topic_id'))
-                                    <option value="{{ $topic->id }}" selected>{{ $topic->name }}</option>
+                            @if (old('subject_id') || old('topic_id')) {
+                                <option value="" selected hidden>Select a topic!</option>
+                                @if (old('subject_id') && old('topic_id'))
+                                    @foreach ($topics as $topic)
+                                        @if ($topic->subject_id == old('subject_id'))
+                                            @if ($topic->id == old('topic_id'))
+                                                <option value="{{ $topic->id }}" selected>{{ $topic->name }}</option>
+                                            @else
+                                                <option value="{{ $topic->id }}">{{ $topic->name }}</option>
+                                            @endif
+                                        @endif
+                                    @endforeach
                                 @else
-                                    <option value="{{ $topic->id }}">{{ $topic->name }}</option>
+                                    @foreach ($topics as $topic)
+                                        @if ($topic->subject_id == old('subject_id'))
+                                            <option value="{{ $topic->id }}">{{ $topic->name }}</option>
+                                        @endif
+                                    @endforeach
                                 @endif
-                            @endforeach
+                                }
+                            @else
+                                <option value="" selected hidden>Select a subject first!</option>
+                            @endif
                         </select>
                         @error('topic_id')
                             <div class="text-danger">{{ $message }}</div>
@@ -78,8 +93,8 @@
                     <div class="mb-3">
                         <label for="correct_choice" class="form-label">Correct Choice</label>
                         <input type="text" class="form-control @error('correct_choice') is-invalid @enderror"
-                            name="correct_choice" id="correct_choice"
-                            placeholder="Enter the correct choice!" value="{{ old('correct_choice') }}">
+                            name="correct_choice" id="correct_choice" placeholder="Enter the correct choice!"
+                            value="{{ old('correct_choice') }}">
                         @error('correct_choice')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -92,4 +107,34 @@
             </div>
         </div>
     </div>
+
+    <script>
+        const subjectElement = document.getElementById('subject_id');
+        const topicElement = document.getElementById('topic_id');
+
+        subjectElement.addEventListener('change', function() {
+            let subjectId = subjectElement.value;
+            let token = document.querySelector('input[name="_token"]').value;
+
+            data = {
+                subject_id: subjectId,
+                _token: token,
+            };
+
+            fetch("{{ route('admin.subject.topics') }}", {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(result) {
+                    // console.log(result);
+                    topicElement.innerHTML = result;
+                });
+        })
+    </script>
 @endsection

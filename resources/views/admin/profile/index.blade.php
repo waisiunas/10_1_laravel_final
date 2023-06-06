@@ -38,7 +38,8 @@
                     </div>
                 </form>
 
-                <form action="{{ route('admin.profile.picture') }}" method="POST" enctype="multipart/form-data" class="my-3">
+                <form action="{{ route('admin.profile.picture') }}" method="POST" enctype="multipart/form-data"
+                    class="my-3">
                     @csrf
                     <div class="mb-3">
                         <label for="picture" class="form-label">Profile Picture</label>
@@ -53,7 +54,7 @@
                     </div>
                 </form>
 
-                <form action="" method="POST">
+                <form action="{{ route('admin.profile.password') }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <div class="row">
@@ -67,9 +68,23 @@
                             </div>
                             <div class="col-6">
                                 <label for="password" class="form-label">New Password</label>
-                                <input type="text" class="form-control" name="password" id="password"
+                                <input type="password" class="form-control" name="password" id="password"
                                     placeholder="Enter the new password!" value="{{ old('password') }}">
                                 @error('password')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="password_confirmation" class="form-label">Confirm New Password</label>
+                                <input type="password" class="form-control" name="password_confirmation"
+                                    id="password_confirmation" placeholder="Confirm your password!"
+                                    value="{{ old('password_confirmation') }}">
+                                @error('password_confirmation')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
